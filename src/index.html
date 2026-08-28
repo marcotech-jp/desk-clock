@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#080b10">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="現在の天気が見られる、横置き端末向けのデスククロック">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <title>Desk Clock</title>
+  </head>
+  <body>
+    <main class="clock-face" aria-label="デスククロック">
+      <header class="topbar">
+        <button
+          class="menu-button"
+          id="menu-button"
+          type="button"
+          aria-label="設定を開く"
+          aria-haspopup="dialog"
+          aria-controls="settings-dialog"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </header>
+
+      <section class="time-panel" aria-label="現在日時">
+        <time class="time" id="time" aria-label="現在時刻">
+          <span class="time__part" id="time-hours">--</span>
+          <span class="time__separator" aria-hidden="true">:</span>
+          <span class="time__part" id="time-minutes">--</span>
+          <span class="time__separator" aria-hidden="true">:</span>
+          <span class="time__part" id="time-seconds">--</span>
+        </time>
+        <time class="date" id="date" aria-label="今日の日付">--月--日 ----曜日</time>
+        <div class="weather" id="weather" aria-label="東京の現在の天気">
+          <div class="weather__now">
+            <span class="weather__location" id="weather-location">東京</span>
+            <div class="weather__current" id="weather-current" aria-live="polite">
+              <span class="weather__icon" id="weather-icon" aria-hidden="true">--</span>
+              <span class="weather__description" id="weather-description">天気を取得中</span>
+              <span class="weather__temperature" id="weather-temperature">--°C</span>
+            </div>
+          </div>
+          <div class="weather__hourly" id="hourly-forecast" aria-label="このあとの天気">
+            <span class="hourly__title">このあと</span>
+            <span class="hourly__item">--</span>
+          </div>
+          <div class="weather__forecast" id="weather-forecast">
+            <span>
+              今日
+              <span class="forecast__high" id="today-high">最高 --°</span>
+              <span class="forecast__separator">/</span>
+              <span class="forecast__low" id="today-low">最低 --°</span>
+            </span>
+            <span>
+              明日
+              <span class="weather__icon weather__icon--small" id="tomorrow-icon" aria-hidden="true">--</span>
+              <span id="tomorrow-description">--</span>
+              <span class="forecast__high" id="tomorrow-high">最高 --°</span>
+              <span class="forecast__separator">/</span>
+              <span class="forecast__low" id="tomorrow-low">最低 --°</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+      <form class="settings" method="dialog">
+        <header class="settings__header">
+          <h1 id="settings-title">設定</h1>
+          <button class="close-button" value="close" aria-label="設定を閉じる" autofocus>×</button>
+        </header>
+
+        <fieldset class="settings__group">
+          <legend>カラーテーマ</legend>
+          <div class="theme-options">
+            <label class="theme-option">
+              <input type="radio" name="theme" value="midnight">
+              <span class="theme-option__swatch theme-option__swatch--midnight"></span>
+              <span>ミッドナイト</span>
+            </label>
+            <label class="theme-option">
+              <input type="radio" name="theme" value="light">
+              <span class="theme-option__swatch theme-option__swatch--light"></span>
+              <span>ライト</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="settings__group">
+          <label for="location-select">地域</label>
+          <div class="location-controls">
+            <select id="location-select" name="location"></select>
+            <button class="location-button" id="location-button" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19">
+                <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span>現在地を使う</span>
+            </button>
+          </div>
+          <p class="settings__hint" id="location-status" role="status" aria-live="polite">ボタンを押したときだけ位置情報を取得します。</p>
+          <p class="settings__attribution">地域名データ © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a></p>
+        </div>
+      </form>
+    </dialog>
+
+    <noscript>この時計を表示するにはJavaScriptを有効にしてください。</noscript>
+    <script src="settings.js" defer></script>
+    <script src="clock.js" defer></script>
+    <script src="weather.js" defer></script>
+  </body>
+</html>

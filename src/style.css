@@ -1,0 +1,565 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP",
+    sans-serif;
+  font-synthesis: none;
+  --background: #080b10;
+  --foreground: #f5f7fa;
+  --muted: #a8b0bd;
+  --accent: #8cd5ff;
+  --glow: rgb(38 62 81 / 22%);
+  --surface: #121923;
+  --border: #2a3542;
+  --warning: #f1bc73;
+  --high: #ffab86;
+  --low: #7fc9f3;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f3f5f7;
+  --foreground: #17202b;
+  --muted: #596572;
+  --accent: #147da8;
+  --glow: rgb(62 151 190 / 13%);
+  --surface: #fff;
+  --border: #ced5dc;
+  --warning: #9a5a00;
+  --high: #b54828;
+  --low: #17678f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-width: 280px;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--background);
+}
+
+body {
+  min-height: 100svh;
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.clock-face {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 100%;
+  height: 100svh;
+  min-height: 240px;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    max(24px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom))
+    max(24px, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 44%, var(--glow), transparent 44%),
+    var(--background);
+}
+
+.topbar {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  min-width: 0;
+}
+
+.weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.4rem, 1.2vh, 0.7rem);
+  min-width: 0;
+  margin-top: clamp(0.9rem, 2.5vh, 1.5rem);
+  color: var(--muted);
+  font-size: clamp(0.95rem, 2.3vw, 1.4rem);
+  font-weight: 550;
+  letter-spacing: 0.03em;
+}
+
+.weather__now {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.55rem, 1.4vw, 0.9rem);
+}
+
+.menu-button,
+.close-button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.menu-button:hover,
+.menu-button:focus-visible,
+.close-button:hover,
+.close-button:focus-visible {
+  color: var(--foreground);
+  background: var(--surface);
+  border-color: var(--border);
+  outline: none;
+}
+
+.weather__location {
+  color: var(--foreground);
+}
+
+.weather__location::after {
+  margin-left: clamp(0.55rem, 1.4vw, 0.9rem);
+  color: var(--border);
+  content: "·";
+}
+
+.weather__current {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.45rem, 1.2vw, 0.8rem);
+  min-width: 0;
+}
+
+.weather__icon {
+  color: var(--accent);
+  font-family: "Noto Sans Symbols 2", "Segoe UI Symbol", sans-serif;
+  font-size: 1.15em;
+  line-height: 1;
+}
+
+.weather__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weather__temperature {
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.weather__forecast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: var(--muted);
+  font-size: 0.72em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.025em;
+}
+
+.weather__forecast > span {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+
+.weather__icon--small {
+  font-size: 1em;
+}
+
+.forecast__high {
+  color: var(--high);
+}
+
+.forecast__low {
+  color: var(--low);
+}
+
+.forecast__separator {
+  color: var(--border);
+}
+
+.weather__hourly {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.7rem, 1.8vw, 1.15rem);
+  color: var(--muted);
+  font-size: 0.66em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.hourly__title {
+  color: var(--foreground);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hourly__item {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
+}
+
+.hourly__icon {
+  color: var(--accent);
+}
+
+.hourly__temperature {
+  color: var(--foreground);
+}
+
+.time-panel {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  display: flex;
+  width: min(96vw, 1400px);
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.time {
+  display: grid;
+  grid-template-columns: 2ch 0.62em 2ch 0.62em 2ch;
+  align-items: baseline;
+  justify-content: center;
+  font-size: clamp(4rem, 17vw, 14rem);
+  font-weight: 300;
+  font-family: "Roboto Mono", "Noto Sans Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-shadow: 0 0 40px rgb(140 213 255 / 8%);
+  white-space: nowrap;
+}
+
+.time__part,
+.time__separator {
+  display: block;
+  text-align: center;
+}
+
+.time__part {
+  letter-spacing: -0.035em;
+}
+
+.date {
+  display: block;
+  margin-top: clamp(1.25rem, 4vh, 2.75rem);
+  color: var(--muted);
+  font-size: clamp(1.2rem, 3.6vw, 2.75rem);
+  font-weight: 450;
+  letter-spacing: 0.06em;
+}
+
+.status {
+  z-index: 1;
+  min-height: 1em;
+  margin: 0;
+  color: var(--warning);
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  text-align: right;
+}
+
+noscript {
+  position: fixed;
+  inset: auto 1rem 1rem;
+  color: var(--warning);
+  text-align: center;
+}
+
+.settings-dialog {
+  width: min(92vw, 520px);
+  max-height: min(88svh, 680px);
+  padding: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 55%);
+}
+
+.settings-dialog::backdrop {
+  background: rgb(0 0 0 / 66%);
+  backdrop-filter: blur(5px);
+}
+
+.settings {
+  max-height: min(88svh, 680px);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  overflow-y: auto;
+}
+
+.settings__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.settings__header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.close-button {
+  font-size: 2rem;
+  font-weight: 250;
+  line-height: 1;
+}
+
+.settings__group {
+  padding: 0;
+  margin: 0 0 1.5rem;
+  border: 0;
+}
+
+.settings__group:last-child {
+  margin-bottom: 0;
+}
+
+.settings__group legend,
+.settings__group > label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.theme-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.theme-option:has(input:checked) {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: var(--accent);
+}
+
+.theme-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.theme-option__swatch {
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.theme-option__swatch--midnight {
+  background: #080b10;
+  border-color: #8cd5ff;
+}
+
+.theme-option__swatch--light {
+  background: #f3f5f7;
+  border-color: #147da8;
+}
+
+.location-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+}
+
+select,
+.location-button {
+  width: 100%;
+  min-height: 48px;
+  color: var(--foreground);
+  font: inherit;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+select {
+  padding: 0.65rem 2.5rem 0.65rem 0.8rem;
+}
+
+.location-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: auto;
+  padding: 0.65rem 0.9rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.location-button:hover,
+.location-button:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.location-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+select:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.settings__hint {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.settings__hint[data-error="true"] {
+  color: var(--warning);
+}
+
+.settings__attribution {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.settings__attribution a {
+  color: inherit;
+}
+
+@media (max-width: 460px) {
+  .location-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .weather__hourly {
+    gap: 0.6rem;
+    font-size: 0.62em;
+  }
+
+}
+
+@media (orientation: portrait) {
+  .clock-face {
+    padding-inline: max(18px, env(safe-area-inset-left));
+  }
+
+  .time-panel {
+    transform: translate(-50%, -53%);
+  }
+
+  .time {
+    font-size: clamp(3.2rem, 18vw, 8rem);
+  }
+
+  .date {
+    font-size: clamp(1.1rem, 5vw, 2rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .weather__description {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@media (max-height: 360px) and (orientation: landscape) {
+  .clock-face {
+    padding-block: max(12px, env(safe-area-inset-top));
+  }
+
+  .time-panel {
+    transform: translate(-50%, -49%);
+  }
+
+  .time {
+    font-size: clamp(4rem, 16vw, 8rem);
+  }
+
+  .date {
+    margin-top: 0.8rem;
+    font-size: clamp(1rem, 3vw, 1.55rem);
+  }
+
+  .settings-dialog {
+    max-height: 94svh;
+  }
+
+  .settings {
+    max-height: 94svh;
+    padding-block: 1rem;
+  }
+
+  .settings__header,
+  .settings__group {
+    margin-bottom: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .weather__current[data-loading="true"] .weather__icon {
+    animation: breathe 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes breathe {
+  50% {
+    opacity: 0.35;
+  }
+}
