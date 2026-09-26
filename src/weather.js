@@ -127,7 +127,13 @@
       "aria-label",
       `${location.name}、現在は${display.label}で${temperature}度。今日の最高気温${todayHigh}度、最低気温${todayLow}度。明日は${tomorrowDisplay.label}、最高気温${tomorrowHigh}度、最低気温${tomorrowLow}度。`,
     );
-    statusElement.textContent = isCached ? "保存された天気情報を表示しています" : "";
+    const cachedNotice = "保存された天気情報を表示しています";
+    statusElement.textContent = isCached ? cachedNotice : "";
+    if (isCached) {
+      window.setTimeout(() => {
+        if (statusElement.textContent === cachedNotice) statusElement.textContent = "";
+      }, 5000);
+    }
   }
 
   function getCachedWeather(locationId) {

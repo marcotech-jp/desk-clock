@@ -15,6 +15,11 @@
   <body>
     <main class="clock-face" aria-label="デスククロック">
       <header class="topbar">
+        <button class="menu-button" id="reload-button" type="button" aria-label="ページを再読み込み" title="再読み込み">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M20 7v5h-5M20 12a8 8 0 1 0-2.34 5.66" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <button
           class="menu-button"
           id="menu-button"
@@ -53,13 +58,13 @@
           </div>
           <div class="weather__forecast" id="weather-forecast">
             <span>
-              今日
+              <span id="today-label">今日</span>
               <span class="forecast__high" id="today-high">最高 --°</span>
               <span class="forecast__separator">/</span>
               <span class="forecast__low" id="today-low">最低 --°</span>
             </span>
             <span>
-              明日
+              <span id="tomorrow-label">明日</span>
               <span class="weather__icon weather__icon--small" id="tomorrow-icon" aria-hidden="true">--</span>
               <span id="tomorrow-description">--</span>
               <span class="forecast__high" id="tomorrow-high">最高 --°</span>

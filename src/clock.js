@@ -13,6 +13,10 @@
   let wakeLock = null;
   let clockTimer = null;
 
+  document.querySelector("#reload-button")?.addEventListener("click", () => {
+    window.location.reload();
+  });
+
   function updateClock() {
     const now = new Date();
     const [hours, minutes, seconds] = [now.getHours(), now.getMinutes(), now.getSeconds()]
@@ -25,6 +29,12 @@
     timeElement.setAttribute("aria-label", `${hours}時${minutes}分${seconds}秒`);
     timeElement.dateTime = now.toISOString();
     dateElement.textContent = dateText;
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    for (const [id, label, day] of [["today-label", "今日", now], ["tomorrow-label", "明日", tomorrow]]) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = `${label} ${day.getDate()}日（${"日月火水木金土"[day.getDay()]}）`;
+    }
     dateElement.dateTime = [
       now.getFullYear(),
       String(now.getMonth() + 1).padStart(2, "0"),

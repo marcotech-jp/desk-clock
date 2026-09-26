@@ -213,7 +213,7 @@
         locationStatus.dataset.error = "true";
         locationButton.disabled = false;
       },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 30 * 60 * 1000 },
+      { enableHighAccuracy: false, timeout: 30000, maximumAge: 24 * 60 * 60 * 1000 },
     );
   });
 
